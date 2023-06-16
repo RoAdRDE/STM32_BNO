@@ -92,6 +92,127 @@ class BNO085
             bool enableRawMagnetometer(uint16_t timeBetweenReports);
             bool enableGyroIntegratedRotationVector(uint16_t timeBetweenReports);
 
+            bool dataAvailable(void);
+            uint16_t getReadings(void);
+            uint16_t parseInputReport(void);   //Parse sensor readings out of report
+	        uint16_t parseCommandReport(void); //Parse command responses out of report
+
+            void getQuat(float &i, float &j, float &k, float &real, float &radAccuracy, uint8_t &accuracy);
+            float getQuatI();
+            float getQuatJ();
+            float getQuatK();
+            float getQuatReal();
+            float getQuatRadianAccuracy();
+            uint8_t getQuatAccuracy();
+
+            void getAccel(float &x, float &y, float &z, uint8_t &accuracy);
+            float getAccelX();
+            float getAccelY();
+            float getAccelZ();
+            uint8_t getAccelAccuracy();
+
+            void getLinAccel(float &x, float &y, float &z, uint8_t &accuracy);
+            float getLinAccelX();
+            float getLinAccelY();
+            float getLinAccelZ();
+            uint8_t getLinAccelAccuracy();
+
+            void getGyro(float &x, float &y, float &z, uint8_t &accuracy);
+            float getGyroX();
+            float getGyroY();
+            float getGyroZ();
+            uint8_t getGyroAccuracy();
+
+            void getFastGyro(float &x, float &y, float &z);
+            float getFastGyroX();
+            float getFastGyroY();
+            float getFastGyroZ();
+
+            void getMag(float &x, float &y, float &z, uint8_t &accuracy);
+            float getMagX();
+            float getMagY();
+            float getMagZ();
+            uint8_t getMagAccuracy();
+
+            void getGravity(float &x, float &y, float &z, uint8_t &accuracy);
+            float getGravityX();
+            float getGravityY();
+            float getGravityZ();
+            uint8_t getGravityAccuracy();
+
+            void sendCalibrateCommand(uint8_t thingToCalibrate);
+            bool sendCommand(uint8_t command);
+
+            void calibrateAccelerometer();
+            void calibrateGyro();
+            void calibrateMagnetometer();
+            void calibratePlanarAccelerometer();
+            void calibrateAll();
+            void endCalibration();
+            void saveCalibration();
+            void requestCalibrationStatus(); //Sends command to get status
+            bool calibrationComplete();
+
+            int16_t getRawAccelX();
+            int16_t getRawAccelY();
+            int16_t getRawAccelZ();
+
+            int16_t getRawGyroX();
+            int16_t getRawGyroY();
+            int16_t getRawGyroZ();
+
+            int16_t getRawMagX();
+            int16_t getRawMagY();
+            int16_t getRawMagZ();
+
+            int16_t getQ1(uint16_t recordID);
+            int16_t getQ2(uint16_t recordID);
+            int16_t getQ3(uint16_t recordID);
+            float getResolution(uint16_t recordID);
+            float getRange(uint16_t recordID);
+            uint32_t readFRSword(uint16_t recordID, uint8_t wordNumber);
+            void frsReadRequest(uint16_t recordID, uint16_t readOffset, uint16_t blockSize);
+            bool readFRSdata(uint16_t recordID, uint8_t startLocation, uint8_t wordsToRead);
+
+
+
+
+
+
+    private:
+	uint8_t _cs;				 //Pins needed for SPI
+	uint8_t _wake;
+	uint8_t _int;
+	uint8_t _rst;
+
+	bool _hasReset = false;		// Keeps track of any Reset Complete packets we receive. 
+
+	//These are the raw sensor values (without Q applied) pulled from the user requested Input Report
+	uint16_t rawAccelX, rawAccelY, rawAccelZ, accelAccuracy;
+	uint16_t rawLinAccelX, rawLinAccelY, rawLinAccelZ, accelLinAccuracy;
+	uint16_t rawGyroX, rawGyroY, rawGyroZ, gyroAccuracy;
+	uint16_t rawMagX, rawMagY, rawMagZ, magAccuracy;
+	uint16_t rawQuatI, rawQuatJ, rawQuatK, rawQuatReal, rawQuatRadianAccuracy, quatAccuracy;
+	uint16_t rawFastGyroX, rawFastGyroY, rawFastGyroZ;
+	uint16_t gravityX, gravityY, gravityZ, gravityAccuracy;
+	uint8_t tapDetector;
+	uint16_t stepCount;
+	uint32_t timeStamp;
+	uint8_t stabilityClassifier;
+	uint8_t activityClassifier;
+	uint8_t *_activityConfidences;						  //Array that store the confidences of the 9 possible activities
+	uint8_t calibrationStatus;							  //Byte R0 of ME Calibration Response
+	uint16_t memsRawAccelX, memsRawAccelY, memsRawAccelZ; //Raw readings from MEMS sensor
+	uint16_t memsRawGyroX, memsRawGyroY, memsRawGyroZ;	//Raw readings from MEMS sensor
+	uint16_t memsRawMagX, memsRawMagY, memsRawMagZ;		  //Raw readings from MEMS sensor
+	int16_t rotationVector_Q1 = 14;
+	int16_t rotationVectorAccuracy_Q1 = 12; //Heading accuracy estimate in radians. The Q point is 12.
+	int16_t accelerometer_Q1 = 8;
+	int16_t linear_accelerometer_Q1 = 8;
+	int16_t gyro_Q1 = 9;
+	int16_t magnetometer_Q1 = 4;
+	int16_t angular_velocity_Q1 = 10;
+	int16_t gravity_Q1 = 8;
 
 
 };
