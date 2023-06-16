@@ -87,6 +87,10 @@ class BNO085
             bool enableGravity(uint16_t timeBetweenReports);
             bool enableGyro(uint16_t timeBetweenReports);
             bool enableMagnetometer(uint16_t timeBetweenReports);
+            bool enableRawAccelerometer(uint16_t timeBetweenReports);
+            bool enableRawGyro(uint16_t timeBetweenReports);
+            bool enableRawMagnetometer(uint16_t timeBetweenReports);
+            bool enableGyroIntegratedRotationVector(uint16_t timeBetweenReports);
 
 
 

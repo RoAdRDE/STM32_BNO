@@ -48,6 +48,36 @@ bool BNO085::enableGyro(uint16_t timeBetweenReports)
 	return status;
 }
 
+bool BNO085::enableMagnetometer(uint16_t timeBetweenReports)
+{
+	bool status = setFeatureCommand(SENSOR_REPORTID_MAGNETIC_FIELD, timeBetweenReports);
+	return status;
+}
+
+bool BNO085::enableRawAccelerometer(uint16_t timeBetweenReports)
+{
+	bool status = setFeatureCommand(SENSOR_REPORTID_RAW_ACCELEROMETER, timeBetweenReports);
+	return status;
+}
+
+bool BNO085::enableRawGyro(uint16_t timeBetweenReports)
+{
+	bool status = setFeatureCommand(SENSOR_REPORTID_RAW_GYROSCOPE, timeBetweenReports);
+	return status;
+}
+
+bool BNO085::enableRawMagnetometer(uint16_t timeBetweenReports)
+{
+	bool status = setFeatureCommand(SENSOR_REPORTID_RAW_MAGNETOMETER, timeBetweenReports);
+	return status;
+}
+
+bool BNO085::enableGyroIntegratedRotationVector(uint16_t timeBetweenReports)
+{
+	bool status = setFeatureCommand(SENSOR_REPORTID_GYRO_INTEGRATED_ROTATION_VECTOR, timeBetweenReports);
+	return status;
+}
+
 bool BNO085::setFeatureCommand(uint8_t reportID, uint16_t timeBetweenReports)
 {
 	bool status = setFeatureCommand(reportID, timeBetweenReports, 0); //No specific config
